@@ -2,13 +2,23 @@ doctype html
 html
     head
         meta(charset='utf-8')
-        title Sample Page Head
-        link(rel='manifest' href='sample-manifest.json')
-        link(rel='icon' href='favicon.ico')
-        link(rel='apple-touch-icon' sizes='180x180' href='img/sample-icon.png')
-        meta(name='description', content='Sample Description in the Sample Page Head')
+        title Pool Swap UI
+        meta(name='description', content='Small UI to add some convenience on transacting tokens between pools and your wallet.')
+        
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         
+        link(rel='manifest' href='manifest.json')       
+        //- link(rel='manifest' href='data:application/manifest+json,{"name":"Pool Swap","short_name":"PoSwp","icons":[{"src":"\/android-chrome-192x192.png","sizes":"192x192","type":"image\/png"},{"src":"\/android-chrome-512x512.png","sizes":"512x512","type":"image\/png"}],"lang":"en-US","start_url":"\/index.html","display":"standalone","background_color":"white","theme_color":"white"}')        
+        
+        link(rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png')
+        link(rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png')
+        link(rel='icon' href='favicon.ico')
+        
+        link(rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png')
+        link(rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5')
+        meta(name='msapplication-TileColor' content='#da532c')
+        meta(name='theme-color' content='#ffffff')
+
         include styles-include.pug
         include scripts-include.pug
     include ../../source/index/indexbody.pug

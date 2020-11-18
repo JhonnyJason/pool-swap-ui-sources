@@ -1,0 +1,5 @@
+defaultstate = {
+    
+}
+    
+module.exports = defaultstate

@@ -7,6 +7,9 @@ debugmodule.initialize = () ->
 
 debugmodule.modulesToDebug = 
     unbreaker: true
-    configmodule: true
+    appcoremodule: true
+    # configmodule: true
+    walletmanagementmodule: true
+    web3handlermodule: true
 
 export default debugmodule
