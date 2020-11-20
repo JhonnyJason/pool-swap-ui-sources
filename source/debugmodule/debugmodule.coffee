@@ -9,6 +9,7 @@ debugmodule.modulesToDebug =
     unbreaker: true
     appcoremodule: true
     # configmodule: true
+    headermodule: true
     walletmanagementmodule: true
     web3handlermodule: true
 

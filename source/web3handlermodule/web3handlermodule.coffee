@@ -10,12 +10,17 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+#region modules
 import Web3 from "../../../node_modules/web3/dist/web3.min.js"
 
+############################################################
+network = null
+
+#endregion
 
 ############################################################
+#region internalProperties
 Contract = null
-network = null
 
 ############################################################
 BNTContract = "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c"
@@ -24,24 +29,52 @@ bancorBNTABI = null
 COTContract = "0x5c872500c00565505f3624ab435c222e558e9ff8"
 cotraderCOTABI = null
 
-
 web3 = null
+
+#endregion
+
+############################################################
+web3handlermodule.providerDetected = false
 
 ############################################################
 web3handlermodule.initialize = ->
     log "web3handlermodule.initialize"
     network = allModules.networkmodule
     provider = window.ethereum || window.givenProvider
-    if(provider) then web3 = new Web3(provider) 
-    else noticeNoWeb3Provider()
-    Contract = web3.eth.Contract
+    if !provider? then return
+
+    initializeWeb3(provider)
     return
 
 ############################################################
-noticeNoWeb3Provider = ->
-    log "noticeNoWeb3Provider"
-    alert("There was no web3 provider available!")
+#region internalFunction
+initializeWeb3 = (provider) ->
+    log "initializeWeb3"
+    web3handlermodule.providerDetected = true
+
+    web3 = new Web3(provider)
+    Contract = web3.eth.Contract
+    try
+        provider.on("connect", web3Connected)
+        provider.on("disconnect", web3Disconnected)
+    catch err then log err
     return
+
+web3Connected = ->
+    log "web3Connected"
+    
+    return
+
+web3Disconnected = ->
+    log "web3Disconnected"
+    
+    return
+
+
+
+
+
+
 
 retrieveBancorBNTABI = ->
     return if bancorBNTABI?
@@ -56,7 +89,10 @@ retrieveCotraderCOTABI = ->
     return
 
 
+#endregion
+
 ############################################################
+#region exposedFunctions
 web3handlermodule.printAccounts = ->
     accounts = await web3.eth.getAccounts()
     coinbase = await web3.eth.getCoinbase()
@@ -85,6 +121,8 @@ web3handlermodule.getCOTBalance = ->
     balance = await cot.methods.balanceOf(accounts[0]).call()
     dezimals = await cot.methods.decimals().call()
     return balance / (10 ** dezimals)
+
+#endregion
 
 
 export default web3handlermodule
