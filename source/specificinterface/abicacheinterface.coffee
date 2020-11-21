@@ -1,25 +1,21 @@
 abicacheinterface = {}
 
-ABIRequest = "https://api.etherscan.io/api?module=contract&action=getabi&address="
-etherScanAPIKey = "..."
-
-
 ############################################################
 #region checkResponse
-digestABIResponse = (response) ->
-    digest = JSON.parse(response.result)
-    return digest
-
+extractABI = (response) ->
+    if typeof response.jsonABI != "object"
+        throw new Error("Unexpected Response: "+response)
+    return response.jsonABI
 
 #endregion
 
 ############################################################
-abicacheinterface.getABI = (contract) ->
-    keyPart = "&apikey="+etherScanAPIKey
-    url = ABIRequest+contract+keyPart
-    response = await @getData(url)
-    digested = digestABIResponse(response)
-    return digested
+abicacheinterface.getABI = (address) ->
+    authCode = "deadbeef"
+    payload = {authCode,address}
+    url = "https://abi-cache.extensivlyon.coffee/getABI"
+    response = await @postData(url, payload)
+    return extractABI(response)
 
 
 #endregion

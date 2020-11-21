@@ -9,7 +9,6 @@ olog = (obj) -> log "\n" + ostr(obj)
 print = (arg) -> console.log(arg)
 #endregion
 
-
 ############################################################
 #region modules
 import MetaMaskOnboarding from "@metamask/onboarding"
@@ -59,7 +58,7 @@ enterConnectedState = ->
 enterDisconnectedState = ->
     log "enterDisconnectedState"
     onboardingHandle.stopOnboarding() if onboardingHandle?
-    await web3Handler.printAccounts()
+    # await web3Handler.printAccounts()
     state.setSilently("walletAvailable", true)
     state.setSilently("account", null)
     state.callOutChange("account")
@@ -115,31 +114,6 @@ walletmanagementmodule.checkConnection = ->
         return false
     enterDisconnectedState()
     return false
-
-
-    # isConnected = await web3.isConnected()
-    # return unless isConnected
-    # if window.ethereum
-    #     log window.ethereum.networkVersion
-    #     log window.ethereum.selectedAddress
-    #     if window.ethereum.selectedAddress
-
-
-    #     await window.ethereum.enable() ## important to await here ;-)
-    #     log window.ethereum.networkVersion
-    #     log window.ethereum.selectedAddress
-    #     # isConnected = web3.isConnected()
-    #     # olog {isConnected}
-    #     await web3Handler.printAccounts()
-    #     # ETHbalance = await web3Handler.getETHBalance()
-    #     # olog {ETHbalance}
-    #     # # BNTBalance = await web3Handler.getBNTBalance()
-    #     # # content.setAmount(BNTBalance)
-    #     # COTBalance = await web3Handler.getCOTBalance()
-    #     # content.setAmount(COTBalance)
-    #     return true
-
-    # return false
     
 #endregion
 

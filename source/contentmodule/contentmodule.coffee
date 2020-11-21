@@ -14,6 +14,10 @@ contentmodule.initialize = () ->
     log "contentmodule.initialize"
     return
 
+contentmodule.setLabel = (label) ->
+    tokenLabel.textContent = label
+    return
+
 contentmodule.setAmount = (amount) ->
     tokenAmountDisplay.textContent = amount
     return
