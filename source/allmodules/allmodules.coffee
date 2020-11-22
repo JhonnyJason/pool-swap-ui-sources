@@ -1,4 +1,6 @@
+import abicachemodule from "./abicachemodule"
 import appcoremodule from "./appcoremodule"
+import bancorhandlermodule from "./bancorhandlermodule"
 import configmodule from "./configmodule"
 import contentmodule from "./contentmodule"
 import debugmodule from "./debugmodule"
@@ -12,11 +14,15 @@ import popupmodule from "./popupmodule"
 import protocolselectmodule from "./protocolselectmodule"
 import sourcesectionmodule from "./sourcesectionmodule"
 import statemodule from "./statemodule"
+import tokenhandlermodule from "./tokenhandlermodule"
+import uniswaphandlermodule from "./uniswaphandlermodule"
 import walletmanagementmodule from "./walletmanagementmodule"
 import web3handlermodule from "./web3handlermodule"
 
 Modules = {
+    abicachemodule,
     appcoremodule,
+    bancorhandlermodule,
     configmodule,
     contentmodule,
     debugmodule,
@@ -30,6 +36,8 @@ Modules = {
     protocolselectmodule,
     sourcesectionmodule,
     statemodule,
+    tokenhandlermodule,
+    uniswaphandlermodule,
     walletmanagementmodule,
     web3handlermodule,
 }
