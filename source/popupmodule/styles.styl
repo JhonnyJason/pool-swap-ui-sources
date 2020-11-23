@@ -1,3 +1,50 @@
 // popup styles
+close-button-size = 33px
+
+
+#click-catcher
+    display: none
+    position fixed
+    width 100%
+    height 100vh
+    z-index 998
+    background-color: element-background
+
 #popup
-    background-color rgba(0, 0, 0, 0.2)
+    border-radius: 30px
+    width 300px
+    max-height 90vh
+    box-sizing: border-box
+    padding 20px
+    transition transform 0.3s
+    position fixed
+    top 50%
+    left 50%
+    z-index 999
+    background-color cd-dark
+    transform: translate(-50%, 101vh) scale(0.0001) 
+
+#click-catcher.active
+    display: block
+#popup.active
+    transform: translate(-50%, -50%)
+
+#popup-heading
+    display flex
+    align-items: center
+    margin-bottom 20px
+
+#popup-content
+    background-color: element-background
+    padding 10px
+
+#popup-title
+    flex-grow 1
+    font-weight: bold
+
+#popup-close-button
+    flex-grow: 0
+
+#popup-close-icon
+    width close-button-size
+    height close-button-size

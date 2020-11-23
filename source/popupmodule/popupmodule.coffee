@@ -12,6 +12,22 @@ print = (arg) -> console.log(arg)
 ############################################################
 popupmodule.initialize = () ->
     log "popupmodule.initialize"
+    clickCatcher.addEventListener("click", popupmodule.turnDown)
+    popupCloseButton.addEventListener("click", popupmodule.turnDown)
     return
-    
+
+############################################################
+popupmodule.turnDown = ->
+    popup.classList.remove("active")
+    clickCatcher.classList.remove("active")
+    return
+
+popupmodule.showWithContent = (content, title) ->
+    popup.classList.add("active")
+    clickCatcher.classList.add("active")
+    popupContent.innerHTML = content
+    popupTitle.textContent = title
+    return
+
+
 module.exports = popupmodule

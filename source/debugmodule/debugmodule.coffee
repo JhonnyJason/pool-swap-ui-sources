@@ -11,6 +11,7 @@ debugmodule.modulesToDebug =
     bancorhandlermodule: true
     # configmodule: true
     # headermodule: true
+    tokenhandlermodule: true
     # walletmanagementmodule: true
     web3handlermodule: true
 

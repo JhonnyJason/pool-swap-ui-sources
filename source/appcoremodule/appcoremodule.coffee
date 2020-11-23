@@ -16,6 +16,7 @@ import web3Handler from "./web3handlermodule"
 
 content = null
 bancorHandler = null
+tokenHandler = null
 
 #endregion
 
@@ -24,6 +25,7 @@ appcoremodule.initialize = () ->
     log "appcoremodule.initialize"
     content = allModules.contentmodule
     bancorHandler = allModules.bancorhandlermodule
+    tokenHandler = allModules.tokenhandlermodule
     return
     
 ############################################################
@@ -41,9 +43,11 @@ appcoremodule.startUp = ->
         content.setLabel("BNT")
         content.setAmount(BNTBalance)
 
-        bancorHandler.retrieveConvertibleTokens()
-        bancorHandler.retrieveLiquidityPools()
+        await bancorHandler.retrieveConvertibleTokens()
+        # bancorHandler.retrieveLiquidityPools()
     
+        tokenHandler.retrieveTokenData()
+
     else log "walletConnection does not work!"
     return
 
