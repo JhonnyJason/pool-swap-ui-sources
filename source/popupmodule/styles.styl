@@ -1,5 +1,89 @@
 // popup styles
 close-button-size = 33px
+popup-padding = 20px
+heading-content-gap = 20px
+
+popup-non-content-space = 2 * popup-padding + close-button-size + heading-content-gap
+
+
+.token-symbol
+    font-weight bold
+    color cd-flash
+    overflow hidden
+    text-overflow: ellipsis
+    max-width 50px
+    margin-left 2px
+
+.token-amount
+    overflow: hidden
+    text-overflow: ellipsis
+    display: inline-block
+    vertical-align: middle
+
+
+#hidden-pool-template
+    display none
+
+.pool-info-block.click-button
+    text-align: center
+    border-radius 10px
+    border solid 2px cd-flash
+    padding 10px
+    margin-bottom 7px
+    margin-top 7px
+
+.pool-symbol
+    margin-bottom 10px
+    font-weight bold 
+    color cd-flash
+
+.pool-token-block
+    display: flex
+    justify-content: space-between
+    max-width 240px
+    overflow hidden
+    align-items: center
+
+    .token-amount
+        max-width 72px
+    
+.token-one 
+    display: flex
+    max-width 115px
+    overflow: hidden
+    margin-right 5px
+
+.token-two
+    display: flex
+    max-width 115px
+    overflow: hidden
+
+
+
+
+#hidden-token-template
+    display none
+
+.token-info-block
+    // @extends .click-button
+    margin auto
+    text-align: center
+    display flex
+    max-width  170px
+    border-radius 10px
+    border solid 2px cd-flash
+    padding 10px
+    margin-bottom 7px
+    margin-top 7px
+        
+    .token-amount
+        margin-left auto
+        max-width 120px
+ 
+
+
+
+
 
 
 #click-catcher
@@ -15,7 +99,7 @@ close-button-size = 33px
     width 300px
     max-height 90vh
     box-sizing: border-box
-    padding 20px
+    padding popup-padding
     transition transform 0.3s
     position fixed
     top 50%
@@ -23,6 +107,16 @@ close-button-size = 33px
     z-index 999
     background-color cd-dark
     transform: translate(-50%, 101vh) scale(0.0001) 
+
+#popup-content
+    background-color: element-background
+    padding 5px
+    overflow-y auto
+    overflow-x hidden
+    max-height: "calc(90vh - %s)" % popup-non-content-space
+    box-sizing: border-box
+    text-align:  center
+    border-radius: 3px
 
 #click-catcher.active
     display: block
@@ -32,11 +126,7 @@ close-button-size = 33px
 #popup-heading
     display flex
     align-items: center
-    margin-bottom 20px
-
-#popup-content
-    background-color: element-background
-    padding 10px
+    margin-bottom heading-content-gap
 
 #popup-title
     flex-grow 1
@@ -44,6 +134,8 @@ close-button-size = 33px
 
 #popup-close-button
     flex-grow: 0
+    width close-button-size
+    height close-button-size
 
 #popup-close-icon
     width close-button-size

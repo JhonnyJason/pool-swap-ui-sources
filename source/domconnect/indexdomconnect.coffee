@@ -12,6 +12,8 @@ indexdomconnect.initialize = () ->
     global.popupTitle = document.getElementById("popup-title")
     global.popupCloseButton = document.getElementById("popup-close-button")
     global.popupContent = document.getElementById("popup-content")
+    global.hiddenTokenTemplate = document.getElementById("hidden-token-template")
+    global.hiddenPoolTemplate = document.getElementById("hidden-pool-template")
     global.connectWalletButton = document.getElementById("connect-wallet-button")
     return
     
