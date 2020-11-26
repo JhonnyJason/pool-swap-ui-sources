@@ -52,10 +52,15 @@ retrieveAllTokenBalances = ->
         tokenDataMap[tokens[i]].balance = balance
     return
 
+# retrieveAllTokenData = ->
+#     for token,data of tokenDataMap when data.balance? and data.balance.length > 1
+        
+
 tokenhandlermodule.retrieveTokenData = ->
     log "tokenhandlermodule.retrieveTokenData"
     await retrieveAllTokenBalances()
-    await retreiveAllTokenData()
+    web3Handler.getMultiERC20Balances()
+    # await retreiveAllTokenData()
     return
 
 #endregion
