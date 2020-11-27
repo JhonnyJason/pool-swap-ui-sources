@@ -12,13 +12,12 @@ print = (arg) -> console.log(arg)
 ############################################################
 #region modules
 # import Web3 from "../../../node_modules/web3/dist/web3.min.js"
-MultiCall = require 'eth-multicall'
+# MultiCall = require 'eth-multicall'
 
 # import { _makeMulticallData } from "@makerdao/multicall/src/aggregate.js"
 # {defaultAbiCoder} = require("@ethersproject/abi");
 
 ############################################################
-network = null
 abiCache = null
 state = null
 
@@ -42,7 +41,6 @@ web3handlermodule.providerDetected = false
 ############################################################
 web3handlermodule.initialize = ->
     log "web3handlermodule.initialize"
-    network = allModules.networkmodule
     abiCache = allModules.abicachemodule
     state = allModules.statemodule
 

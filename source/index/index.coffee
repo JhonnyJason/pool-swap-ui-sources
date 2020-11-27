@@ -6,7 +6,7 @@ global.allModules = Modules
 
 window.onload = ->
     domconnect.initialize()
-    promises = (m.initialize() for n,m of Modules)
+    promises = (m.initialize() for n,m of Modules when m.initialize?) 
     await Promise.all(promises)
     appStartup()
 

@@ -11,10 +11,12 @@ print = (arg) -> console.log(arg)
 
 mustache = require("mustache")
 popupHandle = null
+tokenHandler = null
 
 ############################################################
 sourcesectionmodule.initialize = () ->
     log "sourcesectionmodule.initialize"
+    tokenHandler = allModules.tokenhandlermodule
     popupHandle = allModules.popupmodule
     addWalletTokenButton.addEventListener("click", addWalletTokenButtonClicked)
     addLiquidityPoolButton.addEventListener("click", addLiquidityPoolButtonClicked)
@@ -23,40 +25,41 @@ sourcesectionmodule.initialize = () ->
 addWalletTokenButtonClicked = ->
     log "addWalletTokenButtonClicked"
 
-    tokenList = [
-        {
-            amount: 0.1645272
-            symbol: "ETH"
-        },
-        {
-            amount: 10509321.1626123123123123123123123
-            symbol: "COT"
-        },
-        {
-            amount: 1717.262162
-            symbol: "BNT"
-        },
-        {
-            amount: 555.521323
-            symbol: "DAI"
-        },
-        {
-            amount: 8862.2287
-            symbol: "JJT"
-        }
-    ]
-
     template = hiddenTokenTemplate.innerHTML
     
     content = ""
+
+    # tokenList = [
+        # {
+        #     amount: 0.1645272
+        #     symbol: "ETH"
+        # },
+        # {
+        #     amount: 10509321.1626123123123123123123123
+        #     symbol: "COT"
+        # },
+        # {
+        #     amount: 1717.262162
+        #     symbol: "BNT"
+        # },
+        # {
+        #     amount: 555.521323
+        #     symbol: "DAI"
+        # },
+        # {
+        #     amount: 8862.2287
+        #     symbol: "JJT"
+        # }
+    # ]
+    tokensWithBalance = tokenHandler.getTokensWithBalance()
 
     cObj = {}
     cObj.tokenAmount = 0
     cObj.tokenSymbol = ""
 
-    for token in tokenList
-        cObj.tokenAmount = token.amount
-        cObj.tokenSymbol = token.symbol
+    for token,data of tokensWithBalance when data.balance?
+        cObj.tokenAmount = data.balance
+        cObj.tokenSymbol = data.symbol
         content += mustache.render(template, cObj)
     
     title = "+ Wallet Token"

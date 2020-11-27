@@ -11,17 +11,43 @@ print = (arg) -> console.log(arg)
 
 ############################################################
 #region Modules
-web3Handler = null
-network = null
+contractManager = null
+ethersHandler = null
 tokenHandler = null
+network = null
+utl = null
 
 #endregion
 
 ############################################################
 #region internalProperties
-bancorContractRegistryContract = "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4"
-bancorConverterRegistryContract = ""
-BNTContract = "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c"
+converterRegistryName = "BancorConverterRegistry"
+contractRegistryName = "BancorContractRegistry"
+
+############################################################
+#region defaultContracts
+defaultContracts = {}
+defaultContracts[contractRegistryName] = 
+    addresses: 
+        "0x1": "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4" #mainnet
+        "0x3": "0xFD95E724962fCfC269010A0c6700Aa09D5de3074" #ropsten
+        #"0x4": #rinkeby
+        #"0x5": #goerli
+        #"0x2a": #kovan
+
+defaultContracts["BNT"] = 
+    addresses: 
+        "0x1": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C" #mainnet
+        "0x3": "0xF35cCfbcE1228014F66809EDaFCDB836BFE388f5" #ropsten
+        #"0x4": #rinkeby
+        #"0x5": #goerli
+        #"0x2a": #kovan
+    abi: "erc20"
+
+#endregion
+
+############################################################
+
 
 convertibleTokens = null
 liquidityPools = null
@@ -31,54 +57,82 @@ liquidityPools = null
 ############################################################
 bancorhandlermodule.initialize = () ->
     log "bancorhandlermodule.initialize"
+    utl = allModules.utilmodule
     network = allModules.networkmodule
-    web3Handler = allModules.web3handlermodule
+    ethersHandler = allModules.ethershandlermodule
+    contractManager = allModules.contractmanagermodule 
     tokenHandler = allModules.tokenhandlermodule
     return
 
 ############################################################
 #region internalFunctions
-retrieveConverterRegistryAddress = ->
-    if bancorConverterRegistryContract then return
-    address = bancorContractRegistryContract
+registerConverterRegistryContract = ->
+    chainId = ethersHandler.getChainId()
+    converterRegistryContract = contractManager.getContract(converterRegistryName)
+    if !converterRegistryContract? then converterRegistryContract = {addresses:{}}
+    else if converterRegistryContract.addresses[chainId]? then return
+
     method = "addressOf"
-    args = "0x42616e636f72436f6e7665727465725265676973747279"
-    bancorConverterRegistryContract = await web3Handler.contractCall(address, method, args)
-    olog {bancorConverterRegistryContract}
+    arg = utl.formatBytes32String(converterRegistryName) 
+    
+    converterRegistryContractAddress = await ethersHandler.contractCall(contractRegistryName, method, arg)
+
+    converterRegistryContract.addresses[chainId] = converterRegistryContractAddress
+    await contractManager.addContract(converterRegistryName, converterRegistryContract)
     return
 
+############################################################
 retrieveConvertibleTokens = ->
     if convertibleTokens then return
-    address = bancorConverterRegistryContract
+
     method = "getConvertibleTokens"
-    convertibleTokens = await web3Handler.contractCall(address, method)
+    convertibleTokens = await ethersHandler.contractCall(converterRegistryName, method)
+
     tokenHandler.noticeRelevantTokens(convertibleTokens)
-    # olog {convertibleTokens}
-    log ""+convertibleTokens.length+" convertible Tokens"
     return
 
 retrieveLiquidityPools = ->
     if liquidityPools then return
-    address = bancorConverterRegistryContract
+
     method = "getLiquidityPools"
-    liquidityPools = await web3Handler.contractCall(address, method)
-    # olog {convertibleTokens}
-    log ""+liquidityPools.length+" liquidity Pools"
+    liquidityPools = await ethersHandler.contractCall(converterRegistryName, method)
+
+    noticeRelevantLiquidityPools()
     return
 
+
+noticeRelevantLiquidityPools = ->
+    log "noticeRelevantLiquidityPools"
+    
+    return
 #endregion
 
 ############################################################
 #region exposedFunctions
-bancorhandlermodule.getBNTBalance = -> await web3Handler.getERC20Balance(BNTContract)
+bancorhandlermodule.registerContracts = ->
+    for name,data of defaultContracts
+        await contractManager.addContract(name, data)
+    await registerConverterRegistryContract()
+    return
 
+
+############################################################
+bancorhandlermodule.updateConvertibleTokens = ->
+    convertibleTokens = null
+    await retrieveConvertibleTokens()
+    return
+
+bancorhandlermodule.updateLiquidityPools = ->
+    liquidityPools = null
+    await retrieveConvertibleTokens()
+    return
+
+############################################################
 bancorhandlermodule.retrieveConvertibleTokens = ->
-    await retrieveConverterRegistryAddress()
     await retrieveConvertibleTokens()
     return
 
 bancorhandlermodule.retrieveLiquidityPools = ->
-    await retrieveConverterRegistryAddress()
     await retrieveLiquidityPools()
     return
 

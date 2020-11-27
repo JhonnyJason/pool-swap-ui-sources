@@ -11,8 +11,8 @@ print = (arg) -> console.log(arg)
 
 ############################################################
 #region modules
-import wallet from "./walletmanagementmodule"
-import web3Handler from "./web3handlermodule"
+wallet = null
+ethersHandler = null
 
 content = null
 bancorHandler = null
@@ -23,32 +23,32 @@ tokenHandler = null
 ############################################################
 appcoremodule.initialize = () ->
     log "appcoremodule.initialize"
+    wallet = allModules.walletmanagementmodule
+    ethersHandler = allModules.ethershandlermodule
+
     content = allModules.contentmodule
     bancorHandler = allModules.bancorhandlermodule
     tokenHandler = allModules.tokenhandlermodule
     return
-    
+
+
+registerAllContracts = ->
+    log "registerAllContracts"
+    promises = (m.registerContracts() for n,m of allModules when m.registerContracts?) 
+    await Promise.all(promises)
+    return
+
 ############################################################
 #region exposedFunction
 appcoremodule.startUp = ->
     log "appcoremodule.startUp"
-    if wallet.checkConnection() 
-        log "walletConnection works!"
+    await registerAllContracts()
+    wallet.checkConnection()
 
-        # ETHbalance = await web3Handler.getETHBalance()
-        # content.setLabel("ETH")
-        # content.setAmount(ETHbalance)
+    await bancorHandler.retrieveConvertibleTokens()
+    # await bancorHandler.retrieveLiquidityPools()
 
-        BNTBalance = await bancorHandler.getBNTBalance()
-        content.setLabel("BNT")
-        content.setAmount(BNTBalance)
-
-        await bancorHandler.retrieveConvertibleTokens()
-        # bancorHandler.retrieveLiquidityPools()
-    
-        tokenHandler.retrieveTokenData()
-
-    else log "walletConnection does not work!"
+    await tokenHandler.retrieveTokenData()
     return
 
 #endregion

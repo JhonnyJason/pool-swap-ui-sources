@@ -14,7 +14,7 @@ print = (arg) -> console.log(arg)
 import MetaMaskOnboarding from "@metamask/onboarding"
 
 ############################################################
-web3Handler = null
+ethersHandler = null
 state = null
 
 #endregion
@@ -25,24 +25,27 @@ onboardingHandle = null
 ############################################################
 walletmanagementmodule.initialize = ->
     log "walletmanagementmodule.initialize"
-    web3Handler = allModules.web3handlermodule
+    ethersHandler = allModules.ethershandlermodule
     state = allModules.statemodule
-
+    
     try
+        window.ethereum.on("connect", providerConnected)
+        window.ethereum.on("disconnect", providerDisconnected)
         window.ethereum.on("chainChanged", onChainChanged)
         window.ethereum.on("accountsChanged", onAccountsChanged)
-    catch err then olog {err}
+        window.ethereum.autoRefreshOnNetworkChange = false
+    catch err then log err
     return
 
 ############################################################
-#region interlalFunctions
+#region internalFunctions
 walletIsConnected = ->
-    if !web3Handler.providerDetected then return false
+    if !ethersHandler.providerDetected then return false
     if window.ethereum and window.ethereum.selectedAddress
         return true
     return false
     
-noWalletAvailable = -> !web3Handler.providerDetected
+noWalletAvailable = -> !ethersHandler.providerDetected
 
 ############################################################
 #region enterStateFunctions
@@ -58,7 +61,7 @@ enterConnectedState = ->
 enterDisconnectedState = ->
     log "enterDisconnectedState"
     onboardingHandle.stopOnboarding() if onboardingHandle?
-    # await web3Handler.printAccounts()
+    # await ethersHandler.printAccounts()
     state.setSilently("walletAvailable", true)
     state.setSilently("account", null)
     state.callOutChange("account")
@@ -74,11 +77,22 @@ enterNoMetaMaskState = ->
 
 #endregion
 
-
 ############################################################
 #region eventListeners
+providerDisconnected = ->
+    log "providerDisconnected"
+    walletmanagementmodule.checkConnection()
+    return
+
+providerConnected = ->
+    log "providerConnected"
+    walletmanagementmodule.checkConnection()
+    return
+
 onChainChanged = ->
     log "onChainChanged"
+    window.location.reload()
+    # walletmanagementmodule.checkConnection()
     return
 
 onAccountsChanged = ->
@@ -113,7 +127,7 @@ walletmanagementmodule.checkConnection = ->
         enterNoMetaMaskState()
         return false
     enterDisconnectedState()
-    return false
+    return
     
 #endregion
 

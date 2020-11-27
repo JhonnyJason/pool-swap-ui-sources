@@ -7,12 +7,15 @@ debugmodule.initialize = () ->
 
 debugmodule.modulesToDebug = 
     unbreaker: true
+    abicachemodule: true
     appcoremodule: true
     bancorhandlermodule: true
     # configmodule: true
+    contractmanagermodule: true
+    ethershandlermodule: true
     # headermodule: true
     tokenhandlermodule: true
     # walletmanagementmodule: true
-    web3handlermodule: true
+    # web3handlermodule: true
 
 export default debugmodule
