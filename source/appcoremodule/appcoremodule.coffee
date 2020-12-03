@@ -32,6 +32,7 @@ appcoremodule.initialize = () ->
     return
 
 
+############################################################
 registerAllContracts = ->
     log "registerAllContracts"
     promises = (m.registerContracts() for n,m of allModules when m.registerContracts?) 
