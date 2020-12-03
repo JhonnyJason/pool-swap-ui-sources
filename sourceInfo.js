@@ -1,7 +1,8 @@
 module.exports = {
     getDependencies: () => {
         return {
-            "web3": "^1.3.0",
+            "ethcall": "^3.0.0",
+            "ethers": "^5.0.23",
             "@metamask/onboarding": "^1.0.0"
         }
     }
