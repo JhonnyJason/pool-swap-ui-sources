@@ -20,6 +20,7 @@ popupmodule.initialize = () ->
 popupmodule.turnDown = ->
     popup.classList.remove("active")
     clickCatcher.classList.remove("active")
+    popupContent.innerHTML = ""
     return
 
 popupmodule.showWithContent = (content, title) ->

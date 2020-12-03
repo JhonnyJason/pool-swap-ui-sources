@@ -22,48 +22,47 @@ sourcesectionmodule.initialize = () ->
     addLiquidityPoolButton.addEventListener("click", addLiquidityPoolButtonClicked)
     return
     
+############################################################
+#region internalFunctions
+selectSourceToken = (evt) ->
+    log "selectSourceToken"
+    element = evt.target
+    tokenAddress = element.getAttribute("address")
+    # olog {tokenAddress}
+
+    element.removeEventListener("click", selectSourceToken)
+    element.parentNode.removeChild(element)
+    content.appendChild(element)# TODO append to correct container
+    ## TODO initialize element
+
+    popupHandle.turnDown()
+    return
+
+selectSourcePool = (evt) ->
+    log "selectSourcePool"
+    element = evt.target
+    poolAddress = element.getAttribute("address")
+    olog {poolAddress}
+
+    element.removeEventListener("click", selectSourcePool)
+    element.parent.removeChild(element)
+    content.appendChild(element)# TODO append to correct container
+    ## TODO initialize element
+
+    popupHandle.turnDown()
+    return
+
+############################################################
 addWalletTokenButtonClicked = ->
     log "addWalletTokenButtonClicked"
-
-    template = hiddenTokenTemplate.innerHTML
-    
-    content = ""
-
-    # tokenList = [
-        # {
-        #     amount: 0.1645272
-        #     symbol: "ETH"
-        # },
-        # {
-        #     amount: 10509321.1626123123123123123123123
-        #     symbol: "COT"
-        # },
-        # {
-        #     amount: 1717.262162
-        #     symbol: "BNT"
-        # },
-        # {
-        #     amount: 555.521323
-        #     symbol: "DAI"
-        # },
-        # {
-        #     amount: 8862.2287
-        #     symbol: "JJT"
-        # }
-    # ]
-    tokensWithBalance = tokenHandler.getTokensWithBalance()
-
-    cObj = {}
-    cObj.tokenAmount = 0
-    cObj.tokenSymbol = ""
-
-    for token,data of tokensWithBalance when data.balance?
-        cObj.tokenAmount = data.balance
-        cObj.tokenSymbol = data.symbol
-        content += mustache.render(template, cObj)
-    
+    tokenViews = tokenHandler.getTokenViews()
     title = "+ Wallet Token"
-    popupHandle.showWithContent(content, title)
+
+    popupHandle.showWithContent(tokenViews, title)
+    elements = tokenHandler.getTokenElements(popupContent)
+
+    for element in elements
+        element.addEventListener("click", selectSourceToken)
     return
 
 addLiquidityPoolButtonClicked = ->
@@ -153,5 +152,6 @@ addLiquidityPoolButtonClicked = ->
     popupHandle.showWithContent(content, title)
     return
 
+#endregion
 
 module.exports = sourcesectionmodule

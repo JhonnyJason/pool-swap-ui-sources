@@ -11,6 +11,9 @@ print = (arg) -> console.log(arg)
 
 ############################################################
 #region modules
+mustache = require("mustache")
+
+############################################################
 utl = null
 state = null
 contractManager = null
@@ -51,19 +54,15 @@ tokenhandlermodule.initialize = () ->
     return
 
 ############################################################
-#region exposedFunctions
-tokenhandlermodule.noticeRelevantTokens = (tokens) ->
-    log "tokenhandlermodule.noticeRelevantTokens"
-    allTokens.add(token) for token in tokens
-    return
-
-
-############################################################
+#region internalFunctions
 retrieveAllTokenBalances = ->
+    log "retrieveAllTokenBalances"
     method = "balances"
     
     tokens = Array.from(allTokens)
     account = state.load("account")
+    # olog {account}
+
     users = [account]
     args = [users, tokens]
     
@@ -87,7 +86,6 @@ registerERC20ContractsForTokens = ->
         await contractManager.addContract(name, data)
 
     return
-
 
 
 retrieveAllTokenData = ->
@@ -117,10 +115,20 @@ retrieveAllTokenData = ->
     # olog {tokensWithBalance}
     return
 
+#endregion
+
 ############################################################
+#region exposedFunctions
 tokenhandlermodule.registerContracts = ->
     for name,data of defaultContracts
         await contractManager.addContract(name, data)
+    return
+
+############################################################
+tokenhandlermodule.noticeRelevantTokens = (tokens) ->
+    log "tokenhandlermodule.noticeRelevantTokens"
+    olog tokens
+    allTokens.add(token) for token in tokens
     return
 
 tokenhandlermodule.retrieveTokenData = ->
@@ -129,7 +137,55 @@ tokenhandlermodule.retrieveTokenData = ->
     await retrieveAllTokenData()
     return
 
+############################################################
 tokenhandlermodule.getTokensWithBalance = -> tokensWithBalance
+
+tokenhandlermodule.getTokenViews = ->
+    log "tokenhandlermodule.getTokenViews"
+    template = hiddenTokenTemplate.innerHTML    
+    content = ""
+
+    cObj = {}
+    cObj.tokenAmount = 0
+    cObj.tokenSymbol = ""
+    cObj.tokenAddress = ""
+
+    for token,data of tokensWithBalance when data.balance?
+        cObj.tokenAddress = token
+        cObj.tokenAmount = data.balance
+        cObj.tokenSymbol = data.symbol
+        content += mustache.render(template, cObj)
+
+    return content
+
+tokenhandlermodule.getTokenView = (token) ->
+    log "tokenhandlermodule.getTokenViews"
+    throw new Error("token did not have a balance!")
+    template = hiddenTokenTemplate.innerHTML    
+    content = ""
+
+    cObj = {}
+    cObj.tokenAmount = 0
+    cObj.tokenSymbol = ""
+    cObj.tokenAddress = ""
+
+    for token,data of tokensWithBalance when data.balance?
+        cObj.tokenAddress = token
+        cObj.tokenAmount = data.balance
+        cObj.tokenSymbol = data.symbol
+        content += mustache.render(template, cObj)
+
+    return content
+
+tokenhandlermodule.getTokenElements = (parent) ->
+    log "tokenhandlermodule.getTokenElements"
+    if !parent? then parent = document.body
+    return parent.getElementsByClassName("token-info-block")
+
+############################################################
+tokenhandlermodule.selectAsSource = (address) ->
+    log "tokenhandlermodule.selectAsSource"
+    return
 
 #endregion
 

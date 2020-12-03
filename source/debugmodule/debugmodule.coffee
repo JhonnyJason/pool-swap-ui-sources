@@ -14,6 +14,7 @@ debugmodule.modulesToDebug =
     contractmanagermodule: true
     ethershandlermodule: true
     # headermodule: true
+    sourcesectionmodule: true
     tokenhandlermodule: true
     # walletmanagementmodule: true
     # web3handlermodule: true

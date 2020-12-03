@@ -1,0 +1,12 @@
+include ../../tokenhandlermodule/tokenview.pug
+
+#hidden-pool-template
+    .pool-info-block.click-button(address="{{poolAddress}}")
+        .pool-symbol {{poolSymbol}}
+        .pool-token-block
+            .token-one 
+                .token-amount {{tokenOneAmount}}
+                .token-symbol {{tokenOneSymbol}}
+            .token-two
+                .token-amount {{tokenTwoAmount}}
+                .token-symbol {{tokenTwoSymbol}}

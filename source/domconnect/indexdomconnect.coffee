@@ -2,6 +2,7 @@ indexdomconnect = {name: "indexdomconnect"}
 
 ############################################################
 indexdomconnect.initialize = () ->
+    global.content = document.getElementById("content")
     global.tokenLabel = document.getElementById("token-label")
     global.tokenAmountDisplay = document.getElementById("token-amount-display")
     global.addWalletTokenButton = document.getElementById("add-wallet-token-button")
@@ -11,9 +12,9 @@ indexdomconnect.initialize = () ->
     global.popupTitle = document.getElementById("popup-title")
     global.popupCloseButton = document.getElementById("popup-close-button")
     global.popupContent = document.getElementById("popup-content")
-    global.hiddenTokenTemplate = document.getElementById("hidden-token-template")
-    global.hiddenPoolTemplate = document.getElementById("hidden-pool-template")
     global.connectWalletButton = document.getElementById("connect-wallet-button")
+    global.hiddenPoolTemplate = document.getElementById("hidden-pool-template")
+    global.hiddenTokenTemplate = document.getElementById("hidden-token-template")
     return
     
 module.exports = indexdomconnect
