@@ -160,22 +160,16 @@ tokenhandlermodule.getTokenViews = ->
 
 tokenhandlermodule.getTokenView = (token) ->
     log "tokenhandlermodule.getTokenViews"
-    throw new Error("token did not have a balance!")
+    throw new Error("Token did not have a balance!") unless tokensWithBalance[token]?
+
     template = hiddenTokenTemplate.innerHTML    
-    content = ""
 
     cObj = {}
-    cObj.tokenAmount = 0
-    cObj.tokenSymbol = ""
-    cObj.tokenAddress = ""
+    cObj.tokenAmount = tokensWithBalance[token].balance
+    cObj.tokenSymbol = tokensWithBalance[token].symbol
+    cObj.tokenAddress = token
 
-    for token,data of tokensWithBalance when data.balance?
-        cObj.tokenAddress = token
-        cObj.tokenAmount = data.balance
-        cObj.tokenSymbol = data.symbol
-        content += mustache.render(template, cObj)
-
-    return content
+    return mustache.render(template, cObj)
 
 tokenhandlermodule.getTokenElements = (parent) ->
     log "tokenhandlermodule.getTokenElements"
