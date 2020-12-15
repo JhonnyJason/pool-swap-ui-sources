@@ -31,7 +31,7 @@ defaultContracts = {}
 defaultContracts[balanceCheckerName] = 
     addresses: 
         "0x1": "0xb1F8e55c7f64D203C1400B9D8555d050F94aDF39" #mainnet
-        #"0x3": #ropsten
+        "0x3": "0x8D9708f3F514206486D7E988533f770a16d074a7" #ropsten
         #"0x4": #rinkeby
         #"0x5": #goerli
         #"0x2a": #kovan
@@ -60,7 +60,7 @@ retrieveAllTokenBalances = ->
     method = "balances"
     
     tokens = Array.from(allTokens)
-    account = state.load("account")
+    account = state.get("account")
     # olog {account}
 
     users = [account]

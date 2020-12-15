@@ -26,18 +26,21 @@ abicachemodule.initialize = ->
     state = allModules.statemodule
     maxCacheSize = allModules.configmodule.ABICacheSize
     
-    cacheEntries = state.load("cacheEntries") || [null]
     addressABIMap = state.load("addressABIMap") || {}
+    state.save("addressABIMap", addressABIMap, true)
+    cacheEntries = Object.keys(addressABIMap)
     touchCache(cacheEntries[0])
     return
 
 ############################################################
 touchCache = (address) ->
+    cacheEntries = cacheEntries.filter((entry) -> entry != address)
     cacheEntries.unshift(address)
     toRemove = cacheEntries[maxCacheSize]
-    if typeof toRemove == "string" then delete addressABIMap[toRemove]
     cacheEntries.length = maxCacheSize
-    state.saveAll()
+    
+    if typeof toRemove == "string" then delete addressABIMap[toRemove]
+    state.save("addressABIMap", addressABIMap)        
     return
 
 ############################################################

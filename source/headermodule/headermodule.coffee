@@ -28,16 +28,16 @@ headermodule.initialize = () ->
 
 onConnectWalletButtonClicked = ->
     log "onConnectWalletButtonClicked"
-    address  = state.load("account")
+    address  = state.get("account")
     if address? then return ## maybe disconnect?
     
-    wallet = state.load("walletAvailable")
+    wallet = state.get("walletAvailable")
     if wallet then walletHandler.connectWallet()
     else walletHandler.startOnboarding()
     return
 
 onAccountChanged = ->
-    address  = state.load("account")
+    address  = state.get("account")
     if address? 
         connectWalletButton.textContent = address
         connectWalletButton.classList.add("connected")
@@ -45,7 +45,7 @@ onAccountChanged = ->
 
     connectWalletButton.classList.remove("connected")
     
-    wallet = state.load("walletAvailable")
+    wallet = state.get("walletAvailable")
     if wallet then connectWalletButton.textContent = "Connect Wallet"
     else connectWalletButton.textContent = "Install MetaMask"
     return

@@ -159,14 +159,14 @@ ethershandlermodule.getChainId = -> chainId
 ############################################################
 ethershandlermodule.getETHBalance = ->
     # log "ethershandlermodule.getETHBalance"
-    account = state.load("account")
+    account = state.get("account")
     balance = await provider.getBalance(account)
     return utl.formatEther(balance)
 
 ethershandlermodule.getERC20Balance = (name) ->
     # log "ethershandlermodule.getERC20Balance"
     handle = getContractHandle(name)
-    account = state.load("account")
+    account = state.get("account")
     balance = await handle.balanceOf(account)
     decimals = await handle.decimals()
     return utl.formatUnits(balance, decimals)
@@ -175,7 +175,7 @@ ethershandlermodule.getERC20Balance = (name) ->
 ethershandlermodule.contractCall = (name, method, args) ->
     log "ethershandlermodule.contractCall"
     handle = await getContractHandle(name)
-    account = state.load("account")
+    account = state.get("account")
 
     if Array.isArray(args)
         return await handle[method](args...)
